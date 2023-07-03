@@ -1,0 +1,58 @@
+import React, { useState } from "react";
+import ToDoItem from "./ToDoItem";
+function App() {
+  const [inputText, setInputText] = useState("");
+  const [items, setItems] = useState([]);
+
+  function handleChange(event) {
+    const newValue = event.target.value;
+    setInputText(newValue);
+  }
+
+  function addItem() {
+    setItems(prevItems => {
+      return [...prevItems, inputText];
+    });
+    setInputText("");
+  }
+
+  function handleCheck(id) {
+    setItems((prevValue) => {
+      var temp = [] ; 
+      for(var i=0 ;i<prevValue.length;i++) {
+        if(i !== id) {
+          temp.push(prevValue[i]) ;
+        }
+      }
+      return temp ; 
+    })
+  }
+
+  return (
+    <div className="container">
+      <div className="heading">
+        <h1>To-Do List</h1>
+      </div>
+      <div className="form">
+        <input onChange={handleChange} type="text" value={inputText} />
+        <button onClick={addItem}>
+          <span>Add</span>
+        </button>
+      </div>
+      <div>
+        <ul>
+          {items.map((todoItem,index) => (
+            <ToDoItem 
+              key={index}
+              id={index}
+              onChecked={handleCheck}
+              text={todoItem}
+            />
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+}
+
+export default App;
